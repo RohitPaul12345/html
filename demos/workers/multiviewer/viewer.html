@@ -2,14 +2,16 @@
 <html lang="en">
  <head>
   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Workers example: Multiviewer viewer</title>
   <script>
-   var worker = new SharedWorker('worker.js', 'core');
+   let worker = new SharedWorker('worker.js', 'core');
 
    // CONFIGURATION
    function configure(event) {
      if (event.data.substr(0, 4) != 'cfg ') return;
-     var name = event.data.substr(4).split(' ', 1)[0];
+     let name = event.data.substr(4).split(' ', 1)[0];
      // update display to mention our name is name
      document.getElementsByTagName('h1')[0].textContent += ' ' + name;
      // no longer need this listener
@@ -20,13 +22,13 @@
    // MAP
    function paintMap(event) {
      if (event.data.substr(0, 4) != 'map ') return;
-     var data = event.data.substr(4).split(',');
+     let data = event.data.substr(4).split(',');
      // display tiles data[0] .. data[8]
-     var canvas = document.getElementById('map');
-     var context = canvas.getContext('2d');
-     for (var y = 0; y < 3; y += 1) {
-       for (var x = 0; x < 3; x += 1) {
-         var tile = data[y * 3 + x];
+     let canvas = document.getElementById('map');
+     let context = canvas.getContext('2d');
+     for (let y = 0; y < 3; y += 1) {
+       for (let x = 0; x < 3; x += 1) {
+         let tile = data[y * 3 + x];
          if (tile == '0')
            context.fillStyle = 'green';
          else
@@ -40,16 +42,16 @@
    // PUBLIC CHAT
    function updatePublicChat(event) {
      if (event.data.substr(0, 4) != 'txt ') return;
-     var name = event.data.substr(4).split(' ', 1)[0];
-     var message = event.data.substr(4 + name.length + 1);
+     let name = event.data.substr(4).split(' ', 1)[0];
+     let message = event.data.substr(4 + name.length + 1);
      // display "<name> message" in public chat
-     var public = document.getElementById('public');
-     var p = document.createElement('p');
-     var n = document.createElement('button');
+     let public = document.getElementById('public');
+     let p = document.createElement('p');
+     let n = document.createElement('button');
      n.textContent = '<' + name + '> ';
      n.onclick = function () { worker.port.postMessage('msg ' + name); };
      p.appendChild(n);
-     var m = document.createElement('span');
+     let m = document.createElement('span');
      m.textContent = message;
      p.appendChild(m);
      public.appendChild(p);
@@ -59,21 +61,21 @@
    // PRIVATE CHAT
    function startPrivateChat(event) {
      if (event.data.substr(0, 4) != 'msg ') return;
-     var name = event.data.substr(4).split(' ', 1)[0];
-     var port = event.ports[0];
+     let name = event.data.substr(4).split(' ', 1)[0];
+     let port = event.ports[0];
      // display a private chat UI
-     var ul = document.getElementById('private');
-     var li = document.createElement('li');
-     var h3 = document.createElement('h3');
+     let ul = document.getElementById('private');
+     let li = document.createElement('li');
+     let h3 = document.createElement('h3');
      h3.textContent = 'Private chat with ' + name;
      li.appendChild(h3);
-     var div = document.createElement('div');
-     var addMessage = function(name, message) {
-       var p = document.createElement('p');
-       var n = document.createElement('strong');
+     let div = document.createElement('div');
+     let addMessage = function(name, message) {
+       let p = document.createElement('p');
+       let n = document.createElement('strong');
        n.textContent = '<' + name + '> ';
        p.appendChild(n);
-       var t = document.createElement('span');
+       let t = document.createElement('span');
        t.textContent = message;
        p.appendChild(t);
        div.appendChild(p);
@@ -82,13 +84,13 @@
        addMessage(name, event.data);
      };
      li.appendChild(div);
-     var form = document.createElement('form');
-     var p = document.createElement('p');
-     var input = document.createElement('input');
+     let form = document.createElement('form');
+     let p = document.createElement('p');
+     let input = document.createElement('input');
      input.size = 50;
      p.appendChild(input);
      p.appendChild(document.createTextNode(' '));
-     var button = document.createElement('button');
+     let button = document.createElement('button');
      button.textContent = 'Post';
      p.appendChild(button);
      form.onsubmit = function () {
